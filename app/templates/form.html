@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
+    <title>Formulário</title>
+</head>
+<body class="bg-light">
+    <div class="col-8 m-auto pt-2 pb-2 text-center">
+        <h1>Cadastro</h1>
+    </div>
+
+    <div class="col-8 m-auto pt-3 pb-2 text-center">
+        <a href="/" class="btn btn-info">Voltar</a>
+    </div>
+
+    <div class="col-8 m-auto pt-4 pb-2 text-center">
+        <div id="result"></div>
+
+        <!-- usar /path/ nas actions -->
+        <form action="{% if db %}/update/{{db.id}}/{% else %}/create/{% endif %}" name="form" id="form" method="post">
+
+            {% csrf_token %}
+            <div class="container">
+                <div class="row justify-content-center mt-4">
+                    <div class="fw-bold col-2">Paciente:</div>
+                    <div class="col-2">{{form.paciente}}</div>
+                </div>
+                <div class="row justify-content-center mt-4">
+                    <div class="fw-bold col-2">Exame:</div>
+                    <div class="col-2">{{form.exame}}</div>
+                </div>
+                <div class="row justify-content-center mt-4">
+                    <div class="fw-bold col-2">Data:</div>
+                    <div class="col-2">{{form.data}}</div>
+                </div>
+                <div class="row justify-content-center mt-4">
+                    <div class="fw-bold col-2">OBS / Resultado:</div>
+                    <div class="col-2">{{form.resultado}}</div>
+                </div>
+            </div>
+                
+            <input type="submit" class="btn btn-success mt-4" value="Salvar" >
+        </form>
+    </div>
+
+    {% load static %}
+    <script src="{% static 'script.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
+    <title>Home</title>
+</head>
+<body class="bg-light">
+    <div class="col-8 m-auto pt-2 pb-2 text-center">
+        <h1>Início</h1>
+    </div>
+
+    <div class="col-8 m-auto pt-3 pb-2 text-center">
+        <a href="/form" class="btn btn-success">Adicionar</a>
+    </div>
+
+    {% load bootstrap_icons %}
+    <div class="col-8 m-auto pt-3 pb-2 text-center">
+      <form method='get'>
+        <div class="input-group mb-3">
+          <input type="text" id="search" name="search" class="form-control" placeholder="Buscar">
+          <span class="input-group-text" id="basic-addon1">{% bs_icon 'search' %}</span>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-8 m-auto pt-2 pb-2 text-center">
+        <table class="table table-hover">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Paciente</th>
+              <th scope="col">Exame</th>
+              <th scope="col">Data</th>
+              <th scope="col">OBS / Resultado</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if db|length < 1 %}
+              <tr>
+                <td colspan="5">Nenhum resultado encontrado.</td>
+              </tr>
+
+            {% else %}
+              {% for dados in db %}
+                <tr>
+                  <th>{{dados.paciente}}</th>
+                  <td>{{dados.exame}}</td>
+                  <td>{{dados.data}}</td>
+                  <td>
+                    {% if dados.resultado != None %}
+                    <p class="text-break">{{dados.resultado}}</p>
+                    {% else %}
+                    <p class="text-break">-</p>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <a href="/view/{{dados.id}}" class="btn btn-dark">{% bs_icon 'eye' color='white' %}</a>
+                    <a href="/edit/{{dados.id}}" class="btn btn-primary">{% bs_icon 'pencil-square' color='white' %}</a>
+                    <a href="/delete/{{dados.id}}" class="btn btn-danger btnDel">{% bs_icon 'trash' color='white' %}</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            {% endif %}
+          </tbody>
+        </table>
+        
+        {% if searched %}
+          <a href="/" class="btn btn-info center">Voltar</a>
+        {% endif %}
+      </div>
+
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center mt-4">
+        {% if db.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page={{db.previous_page_number}}"> < </a></li>
+        {% else %}
+          <li class="page-item disabled"><a class="page-link" href="#"> < </a></li>
+        {% endif %}
+
+        {% if db.has_other_pages %}
+        <li class="page-item active"><a class="page-link" href="?page={{db.number}}">{{db.number}}</a></li>
+        {% else %}
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        {% endif %}
+
+        {% if db.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{db.next_page_number}}"> > </a></li>
+        {% else %}
+          <li class="page-item disabled"><a class="page-link" href="#"> > </a></li>
+        {% endif %}
+      </ul>
+    </nav>
+
+    {% load static %}
+    <script src="{% static 'script.js' %}"></script>
+</body>
+</html>
